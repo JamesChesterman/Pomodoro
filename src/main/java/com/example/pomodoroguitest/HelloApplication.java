@@ -16,21 +16,16 @@ import javafx.event.EventHandler;
 
 import java.io.IOException;
 
+
 public class HelloApplication extends Application implements EventHandler<ActionEvent>{
-    Button button;
-    Button pauseButton;
+    Button pauseButton, startButton;
     Text statusText = new Text();
-    Text timerText = new Text();
+    static Text timerText = new Text();
     int time = 1500;
     int WIDTH = 600;
     int HEIGHT = 600;
-    int seconds = 0;
-    int minutes = 0;
-    int hours = 0;
-    String secondsString = String.format("%02d", seconds);
-    String minutesString = String.format("%02d", minutes);
-    String hoursString = String.format("%02d", hours);
     Font normalFont;
+    TimerControls timerControls = new TimerControls();
 
     @Override
     public void start(Stage stage) throws IOException{
@@ -43,12 +38,12 @@ public class HelloApplication extends Application implements EventHandler<Action
         root.getChildren().add(buttonBox);
 
         timerBox.setSpacing(20);
-        timerBox.setPadding(new Insets(HEIGHT/4, 12, HEIGHT/4, 12));
+        timerBox.setPadding(new Insets(HEIGHT/4, WIDTH/2-50, HEIGHT/4, WIDTH/2-50));
 
         //Distance between nodes
         buttonBox.setSpacing(20);
         //Distance around box
-        buttonBox.setPadding(new Insets(HEIGHT/4, 12, HEIGHT/4, 12));   //Insets is top, right, bottom, left.
+        buttonBox.setPadding(new Insets(HEIGHT/4, 30, HEIGHT/4, 30));   //Insets is top, right, bottom, left.
         buttonBox.setStyle("-fx-background-color: #336699;");
 
         normalFont = Font.font("Comic Sans MS", FontWeight.NORMAL, FontPosture.REGULAR, 20);
@@ -64,12 +59,16 @@ public class HelloApplication extends Application implements EventHandler<Action
         pauseButton.setText("Pause");
         pauseButton.setOnAction(this::handle);
 
-        statusText.setText("Press play to begin!");
+        startButton = new Button();
+        startButton.setText("Start");
+        startButton.setOnAction(this::handle);
 
-        timerText.setText(hoursString + ":" + minutesString + ":" + secondsString);
+        statusText.setText("Press start to begin!");
+
+        timerText.setText("Timer");
         timerText.setFont(normalFont);
 
-        buttonBox.getChildren().addAll(pauseButton, statusText);
+        buttonBox.getChildren().addAll(pauseButton, startButton, statusText);
         timerBox.getChildren().add(timerText);
 
         //So it's stage contains a scene which contains the panes.
@@ -78,12 +77,23 @@ public class HelloApplication extends Application implements EventHandler<Action
         stage.show();
     }
 
+    public static void setTime(String timeTxt){
+        timerText.setText(timeTxt);
+    }
+
     @Override
     public void handle(ActionEvent event){
-        if(event.getSource() == button){
-            button.setText("Hi");
-        }else if(event.getSource() == pauseButton){
-
+        if(event.getSource() == pauseButton){
+            if(timerControls.getTimerOn()){
+                timerControls.setTimerOn(false);
+                pauseButton.setText("Play");
+            }else{
+                timerControls.setTimerOn(true);
+                pauseButton.setText("Pause");
+            }
+        }else if(event.getSource() == startButton){
+            timerControls.startTimer(65);
+            timerControls.setTimerOn(true);
         }
 
     }
