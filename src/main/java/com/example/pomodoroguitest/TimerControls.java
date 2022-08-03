@@ -13,6 +13,8 @@ public class TimerControls {
     boolean timerOn;
     int time;
     String timeTxt;
+    boolean studyTime;
+    int startTime;
 
     public TimerControls(){
         Timer timer = new Timer();
@@ -26,11 +28,23 @@ public class TimerControls {
                         time -= 1;
                         minutes = time / 60;
                         seconds = time % 60;
-                        secondsString = String.format("%02d", seconds);
-                        minutesString = String.format("%02d", minutes);
-                        timeTxt = minutesString + ":" + secondsString;
-                        HelloApplication.setTime(timeTxt);
+                    }else{
+                        if(studyTime){
+                            //Put the clock to 5 minutes
+                            seconds = 5;
+                        }else{
+                            //Put the clock to 25 minutes
+                            seconds = 25;
+                        }
                     }
+                    secondsString = String.format("%02d", seconds);
+                    minutesString = String.format("%02d", minutes);
+                    timeTxt = minutesString + ":" + secondsString;
+                    HelloApplication.setTime(timeTxt);
+                    System.out.println(time);
+                    System.out.println(startTime);
+                    System.out.println(Float.valueOf((float)time/(float)startTime));
+                    HelloApplication.setRectangleWidth(Float.valueOf((float)time/(float)startTime));
                 }
 
             }
@@ -47,8 +61,10 @@ public class TimerControls {
     public boolean getTimerOn(){
         return timerOn;
     }
-    public void startTimer(int seconds){
+    public void startTimer(int seconds, boolean studyTime){
         time = seconds;
+        startTime = seconds;
+        this.studyTime = studyTime;
     }
     public String getTime(){
         return null;
