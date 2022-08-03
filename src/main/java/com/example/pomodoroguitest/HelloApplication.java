@@ -111,12 +111,12 @@ public class HelloApplication extends Application implements EventHandler<Action
         }else if(event.getSource() == startButton){
             if(studyTime == true){
                 timerBox.setStyle("-fx-background-color: #B30059");
-                timerControls.startTimer(25, studyTime);
+                timerControls.startTimer(1500, studyTime);
                 studyTime = false;
             }else{
                 //https://rgbcolorcode.com/color/008055
                 timerBox.setStyle("-fx-background-color: #008055;");
-                timerControls.startTimer(5, studyTime);
+                timerControls.startTimer(300, studyTime);
                 studyTime = true;
             }
             timerControls.setTimerOn(true);
